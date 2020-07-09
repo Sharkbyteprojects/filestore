@@ -11,8 +11,6 @@ services:
       context: ma
     expose:
       - "3000"
-    volumes: 
-      - ./node.log:/usr/src/app/myapplication.log
     depends_on:
       - redis
     restart: on-failure
