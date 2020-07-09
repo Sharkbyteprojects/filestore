@@ -41,8 +41,10 @@ function chash(file) {
     const hash = crypto.createHash('sha256');
     hash.update(file);
     return hash.digest('hex');
-}
-const app = express();
+}const app = express();
+app.get("/",(req,res)=>{
+  res.sendStatus(200);
+});
 app.get("/api/downstream",(req,res)=>{
   res.set({
     "content-type": "text/plain"

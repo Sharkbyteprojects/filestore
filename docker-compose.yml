@@ -16,13 +16,48 @@ services:
     restart: on-failure
     links:
       - redis
+  wservb:
+        build:
+          context: ma
+        expose:
+          - "3000"
+        depends_on:
+          - redis
+        restart: on-failure
+        links:
+          - redis
+  wservc:
+            build:
+              context: ma
+            expose:
+              - "3000"
+            depends_on:
+              - redis
+            restart: on-failure
+            links:
+              - redis
+  hapro:
+        build:
+          context: haprox
+        expose:
+          - "80"
+          - "70"
+        depends_on: 
+          - wserv
+          - wservb
+          - wservc
+        links: 
+          - wserv
+          - wservb
+          - wservc
+        
   nginx:
     build:
       context: ngi
     ports: 
       - 80:80
     depends_on: 
-      - wserv
+      - hapro
     links: 
-      - wserv
+      - hapro
   

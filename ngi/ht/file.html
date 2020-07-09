@@ -7,7 +7,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function(){
-            $.get("/api/downstream",{hash: document.location.hash.replace("#", "")}, function(data){
+            var xx=document.location.hash.replace("#", "");
+            $.get("/api/downstream",{hash: xx}, function(data){
                 function cleanseString(string) {
                     return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 };
@@ -18,6 +19,7 @@
 </head>
 <body style="color: #09ff00;background-color:#000000;">
     <h1>FileReader</h1>
+    <p><a href="/">To Main</a></p>
     <pre style="overflow:scroll;height:400px;width: 100%;resize:vertical;"><strong style="color:#fffb00">LOADING</strong></pre>
 </body>
 </html>
