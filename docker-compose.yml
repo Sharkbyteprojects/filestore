@@ -1,0 +1,30 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    volumes:
+      - ./redisd:/data
+    expose:
+      - "6379"
+  wserv:
+    build:
+      context: ma
+    expose:
+      - "3000"
+    volumes: 
+      - ./node.log:/usr/src/app/myapplication.log
+    depends_on:
+      - redis
+    restart: on-failure
+    links:
+      - redis
+  nginx:
+    build:
+      context: ngi
+    ports: 
+      - 80:80
+    depends_on: 
+      - wserv
+    links: 
+      - wserv
+  
