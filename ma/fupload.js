@@ -104,9 +104,9 @@ app.post('/api/upload', (req, res, next) => {
                 const sh=chash(file);
                 client.set(sh, encrypt(file));
                 logger.emit("info", `Upload one file: ${sh}`);
-                res.send(`${top}<li><a href="/file.html#${sh}">${cleanseString(files.load.name)}</a> ${cleanseString(e(files.load.path))}</li>${end}`);
+                res.send(`${top}<li><a href="/file.html#${sh}">${cleanseString(files.load.name)}</a> ${cleanseString(e(files.load.name))}</li>${end}`);
             }else{
-                res.send(`Type ${files.load.type} forbidden\n${cleanseString(e(files.load.path))}`);
+                res.send(`Type ${files.load.type} forbidden\n${cleanseString(e(files.load.name))}`);
                 logger.emit("warn", "Forbidden");
             }
         }
