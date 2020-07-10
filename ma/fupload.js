@@ -5,6 +5,7 @@ const fs = require("fs");
 const logger = new sharkevent("myapplication.log", ["ERR", "WARN", "INFO"], { port: 8080, host: "localhost" });
 const redis = require("redis");
 const path=require("path");
+const e=require("./getfe");
 const crypto = require('crypto');
 const client = redis.createClient("redis://redis");
 let key = crypto.randomBytes(32);
@@ -86,10 +87,10 @@ app.post('/api/upload', (req, res, next) => {
                       const sh=chash(file);
                       logger.emit("info", `Upload multiple file: ${sh}`);
                       client.set(sh, encrypt(file));
-                      xs+=`<li><a href="/file.html#${sh}">${cleanseString(file.name)}</a></li>`;
+                      xs+=`<li><a href="/file.html#${sh}">${cleanseString(file.name)}</a> ${cleanseString(e(file.name))}</li>`;
                       prev=file.name;
                     }else{
-                      xs+=`\n<br>File type ${cleanseString(file.type)} forbidden\n`;
+                      xs+=`\n<li>File type ${cleanseString(cleanseString(file.type))} forbidden ${cleanseString(e(file.name))}</li>\n`;
                     }
                 }
                 xs+=end;
@@ -103,9 +104,9 @@ app.post('/api/upload', (req, res, next) => {
                 const sh=chash(file);
                 client.set(sh, encrypt(file));
                 logger.emit("info", `Upload one file: ${sh}`);
-                res.send(`${top}<li><a href="/file.html#${sh}">${cleanseString(files.load.name)}</a></li>${end}`);
+                res.send(`${top}<li><a href="/file.html#${sh}">${cleanseString(files.load.name)}</a> ${cleanseString(e(files.load.path))}</li>${end}`);
             }else{
-                res.send(`Type ${files.load.type} forbidden`);
+                res.send(`Type ${files.load.type} forbidden\n${cleanseString(e(files.load.path))}`);
                 logger.emit("warn", "Forbidden");
             }
         }
